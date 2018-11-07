@@ -1,5 +1,5 @@
 const ledger = {
-  defaultDPath: { label: 'Ledger (ETH)', dpath: "m/44'/60'/0'" }, // first address: m/44'/60'/0/0
+  defaultDPath: { label: 'Ledger, Coinomi (ETH)', dpath: "m/44'/60'/0'" }, // first address: m/44'/60'/0/0
   classicPath: { label: 'Ledger (ETC)', dpath: "m/44'/60'/160720'/0'" } // first address: m/44'/60'/160720'/0/0
 };
 
@@ -10,6 +10,15 @@ const trezor = {
     label: 'Jaxx, Metamask, Exodus, imToken, TREZOR (ETH) & Digital Bitbox',
     dpath: "m/44'/60'/0'/0"
   } // first address: m/44'/60'/0'/0/0
+};
+
+const coinomi = {
+    defaultDPath: { label: 'Ledger, Coinomi (ETH)', dpath: "m/44'/60'/0'" }, // first address: m/44'/60'/0'/0
+    classicPath: { label: 'Coinomi (ETC)', dpath: "m/44'/61'/0'" }, // first address: m/44'/61'/0'/0
+    hwExpansePath: { label: 'Coinomi (EXP)', dpath: "m/44'/40'/0'" }, // first address: m/44'/40'/0'/0
+    hwCallistoPath: { label: 'Coinomi (CLO)', dpath: "m/44'/820'/0'" }, // first address: m/44'/820'/0'/0
+    hwMusicoinPath: { label: 'Coinomi (MUSIC)', dpath: "m/44'/184'/0'" }, // first address: m/44'/184'/0'/0
+    mixPath: { label: 'Coinomi (MIX)', dpath: "m/44'/76'/0'" }, // first address: m/44'/76'/0'/0
 };
 
 const paths = {
@@ -34,7 +43,7 @@ const paths = {
   hwESNetworkPath: { label: 'EtherSocial (ESN)', dpath: "m/44'/31102'/0'/0" } // first address: m/44'/31102'/0'/0/0
 };
 
-export { paths, ledger, trezor };
+export { paths, ledger, trezor, coinomi };
 
 export function getDerivationPath(networkName, deviceBrand) {
   if (deviceBrand) {
@@ -91,6 +100,23 @@ export function getDerivationPath(networkName, deviceBrand) {
           return paths.hwESNetworkPath;
         default:
           return paths.defaultDPath;
+      }
+    } else if (deviceBrand === 'coinomi') {
+      switch (networkName) {
+        case 'ETH':
+          return coinomi.defaultDPath;
+        case 'ETC':
+          return coinomi.classicPath;
+        case 'EXP':
+          return coinomi.hwExpansePath;
+        case 'CLO':
+          return coinomi.hwCallistoPath;
+        case 'MUSIC':
+          return coinomi.hwMusicoinPath;
+        case 'MIX':
+          return coinomi.mixPath;
+        default:
+          return coinomi.defaultDPath;
       }
     }
   } else {
